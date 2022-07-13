@@ -1,0 +1,309 @@
+[
+    {
+        "id": "471ce338.e5126c",
+        "type": "tab",
+        "label": "MQTT",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "44fd450d.90b66c",
+        "type": "mqtt out",
+        "z": "471ce338.e5126c",
+        "name": "",
+        "topic": "/AndreoliGregorio/IIoT",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f1afe43d.ce1b88",
+        "x": 640,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6f889799.b0d098",
+        "type": "inject",
+        "z": "471ce338.e5126c",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 360,
+        "wires": [
+            [
+                "3dafd302883b9c83",
+                "0a2df58c5475de1c",
+                "694e7f43cbe172d7",
+                "6e05665168c67fb1"
+            ]
+        ]
+    },
+    {
+        "id": "f775adb8.095f6",
+        "type": "debug",
+        "z": "471ce338.e5126c",
+        "name": " Message sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "329e5d55.93b802",
+        "type": "mqtt in",
+        "z": "471ce338.e5126c",
+        "name": "",
+        "topic": "/AndreoliGregorio/+",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "f1afe43d.ce1b88",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 270,
+        "y": 660,
+        "wires": [
+            [
+                "724a1d6f.d0d4d4"
+            ]
+        ]
+    },
+    {
+        "id": "724a1d6f.d0d4d4",
+        "type": "debug",
+        "z": "471ce338.e5126c",
+        "name": "Message received",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "3dafd302883b9c83",
+        "type": "function",
+        "z": "471ce338.e5126c",
+        "name": "Generate Payload",
+        "func": "\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"location\" : 'IoT network - SCADA 5',\n                \"company\" : \"Greg industries\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 260,
+        "wires": [
+            [
+                "f775adb8.095f6",
+                "44fd450d.90b66c"
+            ]
+        ]
+    },
+    {
+        "id": "0a2df58c5475de1c",
+        "type": "function",
+        "z": "471ce338.e5126c",
+        "name": "Generate Payload",
+        "func": "\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"location\" : 'IoT network - SCADA 5',\n                \"company\" : \"Greg industries\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 340,
+        "wires": [
+            [
+                "7e1aebe229139546",
+                "2f89af3a3a042826"
+            ]
+        ]
+    },
+    {
+        "id": "2f89af3a3a042826",
+        "type": "mqtt out",
+        "z": "471ce338.e5126c",
+        "name": "",
+        "topic": "/AndreoliGregorio/IIoT",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f1afe43d.ce1b88",
+        "x": 640,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "7e1aebe229139546",
+        "type": "debug",
+        "z": "471ce338.e5126c",
+        "name": " Message sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "694e7f43cbe172d7",
+        "type": "function",
+        "z": "471ce338.e5126c",
+        "name": "Generate Payload",
+        "func": "\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"location\" : 'IoT network - SCADA 5',\n                \"company\" : \"Greg industries\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 440,
+        "wires": [
+            [
+                "3994631ab6e66e98",
+                "797cfd325326833b"
+            ]
+        ]
+    },
+    {
+        "id": "797cfd325326833b",
+        "type": "mqtt out",
+        "z": "471ce338.e5126c",
+        "name": "",
+        "topic": "/AndreoliGregorio/IIoT",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f1afe43d.ce1b88",
+        "x": 640,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "3994631ab6e66e98",
+        "type": "debug",
+        "z": "471ce338.e5126c",
+        "name": " Message sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "6e05665168c67fb1",
+        "type": "function",
+        "z": "471ce338.e5126c",
+        "name": "Generate Payload",
+        "func": "\nvar randomTemp = (Math.random() * (30 - (-30)) + (-30)).toFixed(1);  //random temp from -30.0 to 30.0 degrees\n\nvar timeIndex = Date.now();\n//This function below gets date and time and displays it via shortDate variable\nvar timeStamp = new Date().toLocaleTimeString();\nvar dateObj= new Date();\nvar newDate = dateObj.getFullYear() + '/' + ('0' + (dateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + dateObj.getDate()).slice(-2) + ' <' + timeStamp + '>';\n\n// var month = ('0' + (dateObj.getMonth() + 1)).slice(-2);\n// var date = ('0' + dateObj.getDate()).slice(-2);\n// var year = dateObj.getFullYear();\n// var dateTime = year + '/' + month + '/' + date + ' <' + timeStamp + '>';\n\nvar idx = context.get('count') || 0;\n\nif( idx > 9 )\n{\n    idx = 0;  \n}\ncontext.set('count',idx+1); //store next idx for later\n\nmsg.payload = \n            {\n               \"uid\" : timeIndex,\n               \"timeStamp\" : newDate,\n                \"location\" : 'IoT network - SCADA 5',\n                \"company\" : \"Greg industries\",\n                \"avgTemp\" : randomTemp\n            };\n\nmsg.payload = JSON.stringify(msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 520,
+        "wires": [
+            [
+                "046f6add07e0a1c9",
+                "3bcd4f260b97ecae"
+            ]
+        ]
+    },
+    {
+        "id": "3bcd4f260b97ecae",
+        "type": "mqtt out",
+        "z": "471ce338.e5126c",
+        "name": "",
+        "topic": "/AndreoliGregorio/IIoT",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f1afe43d.ce1b88",
+        "x": 640,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "046f6add07e0a1c9",
+        "type": "debug",
+        "z": "471ce338.e5126c",
+        "name": " Message sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "f1afe43d.ce1b88",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
